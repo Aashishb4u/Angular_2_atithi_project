@@ -1,0 +1,212 @@
+.alert-modal .modal-content {
+    border-radius: 0px;
+    -webkit-radius: 0px;
+    -moz-radius: 0px;
+    -o-radius: 0px;
+}
+
+.alert-modal th {
+    background-color: darkred;
+    color: #fff;
+    border: 0 !important;
+    font-size: 18px;
+}
+
+.alert-modal td {
+    border: 0 !important;
+}
+
+.alert-modal .green-bg {
+    border-radius: 0 !important;
+}
+
+.alert-modal .modal-dialog.modal-sm {
+    width: 350px !important;
+    background-color: lightgrey;
+}
+
+.alert-modal .modal-content table {
+    margin-bottom: 0 !important;
+}
+
+.alert-modal .modal-content .icon {
+    margin-left: 10px;
+}
+
+.alert-modal .modal-content h4 {
+    font-size: 23px;
+}
+
+.alert-modal #mini-logo {
+    margin-right: 13px;
+}
+
+#deleteToast {
+    visibility: hidden;
+    min-width: 250px;
+    margin-left: -125px;
+    background-color: red;
+    margin-top: 200px;
+    color: white;
+    text-align: center;
+    border-radius: 2px;
+    padding: 16px;
+    position: fixed;
+    z-index: 1;
+    left: 50%;
+    top: 30px;
+}
+
+#deleteToast.show {
+    visibility: visible;
+}
+
+#updateToast {
+    visibility: hidden;
+    min-width: 250px;
+    margin-left: -125px;
+    background-color: red;
+    color: white;
+    text-align: center;
+    border-radius: 2px;
+    padding: 16px;
+    position: fixed;
+    z-index: 1;
+    left: 50%;
+    top: 30px;
+}
+
+#updateToast.show {
+    visibility: visible;
+
+}
+
+button.logOutbtn:hover {
+    background-color: darkred;
+}
+
+button.addbtn:hover {
+    background-color: darkgreen;
+}
+
+#toast {
+    visibility: hidden;
+    min-width: 250px;
+    margin-left: -125px;
+    background-color: red;
+    color: white;
+    text-align: center;
+    border-radius: 2px;
+    padding: 16px;
+    position: fixed;
+    z-index: 1;
+    left: 50%;
+    top: 200px;
+}
+
+#toast.show {
+    visibility: visible;
+
+}
+
+@-webkit-keyframes fadein {
+    from {
+        bottom: 0;
+        opacity: 0;
+    }
+    to {
+        bottom: 30px;
+        opacity: 1;
+    }
+}
+
+@keyframes fadein {
+    from {
+        bottom: 0;
+        opacity: 0;
+    }
+    to {
+        bottom: 30px;
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes fadeout {
+    from {
+        bottom: 30px;
+        opacity: 1;
+    }
+    to {
+        bottom: 0;
+        opacity: 0;
+    }
+}
+
+.logOutbtn {
+    background-color: red;
+    color: floralwhite;
+    padding: 5px;
+    border-radius: 10%;
+}
+
+@keyframes fadeout {
+    from {
+        bottom: 30px;
+        opacity: 1;
+    }
+    to {
+        bottom: 0;
+        opacity: 0;
+    }
+}
+
+.modal-body .form-horizontal .col-sm-2,
+.modal-body .form-horizontal .col-sm-10 {
+    width: 100%
+}
+
+.modal-body .form-horizontal .control-label {
+    text-align: left;
+}
+
+.modal-body .form-horizontal .col-sm-offset-2 {
+    margin-left: 15px;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.header {
+    background-color: #1dc1da;
+}
+
+.addbtn {
+    background-color: green;
+    color: floralwhite;
+    padding: 5px;
+    border-radius: 10%;
+
+}
+
+.titleName {
+    color: blue;
+    font-size: 3em;
+    font-family: 'Times New Roman';
+    display: inline-block;
+}
+
+.role {
+    display: inline-block;
+    border: 1px solid black;
+    color: dodgerblue;
+    padding: 5px;
+    margin: 10px;
+}
+
+th {
+    color: white;
+}
+
