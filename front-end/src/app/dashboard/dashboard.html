@@ -1,0 +1,382 @@
+<div class="jumbotron text-center">
+    <div class="col-md-12 offset4 table-responsive">
+        <div class="color_code">
+
+            <div>
+                <div class="titleName">Hello</div> &nbsp;
+                <div class="titleName" id="username" value=""></div>
+                <br>
+            </div>
+
+        </div>
+        <div id="userrole" class="role" value=""></div>
+    </div>
+</div>
+
+<div id="deleteToast"></div>
+<div id="toast"></div>
+<div id="updateToast"></div>
+
+<div (keyup.esc)="hideDelete();hide();hidelogOut();" class="container">
+    <div class="search_div" >
+        <input tabindex="1" type="text" placeholder="Search Visitor By Name"
+               (keyup)="search($event, search_data) " class="search_input form-control input-md" #search_data>
+    </div>
+
+    <div class="row clearfix">
+        <div class="col-md-12 table-responsive">
+            <table class="color_code table table-bordered table-hover table-sortable"
+                   id="tab_logic" [mfData]="data" #mf="mfDataTable" [mfRowsOnPage]="5">
+                <thead>
+                <tr>
+                    <th *ngIf="roleOf" class="text-center">
+                        <mfDefaultSorter by="user_id.name">
+                            Added by
+                        </mfDefaultSorter>
+                    </th>
+                    <th class="text-center">
+                        <mfDefaultSorter by="name">
+                            Name
+                        </mfDefaultSorter>
+                    </th>
+                    <th class="text-center">
+                        <mfDefaultSorter by="email">
+                            Email
+                        </mfDefaultSorter>
+                    </th>
+                    <th class="text-center">
+                        <mfDefaultSorter by="phone_no">
+                            Phone no
+                        </mfDefaultSorter>
+                    </th>
+                    <th class="text-center">
+                        <mfDefaultSorter by="in_time">
+                            In-time
+                        </mfDefaultSorter>
+                    </th>
+                    <th class="text-center">
+                        <mfDefaultSorter by="out_time">
+                            Out-time
+                        </mfDefaultSorter>
+                    </th>
+                    <th class="text-center">
+                        Actions
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let visitor of mf.data">
+                    <td *ngIf="roleOf">
+                        <input type="text" disabled name='user0' style="width: 90px" value='{{visitor.user_id.name}}'
+                               class="form-control"/>
+                    </td>
+                    <td>
+                        <input type="text" disabled name='name0' style="width: 100px" value='{{visitor.name}}'
+                               class="form-control"/>
+                    </td>
+                    <td>
+                        <input type="email" disabled name='mail0' value='{{visitor.email}}' class="form-control"/>
+                    </td>
+                    <td>
+                        <input disabled type="tel" name='phno' style="width: 110px" value='{{visitor.phone_no}}'
+                               class="form-control"/>
+                    </td>
+                    <td>
+                        <input disabled type="text" name='intime'
+                               value='{{visitor.in_time|date:"dd-MMM-yyyy HH:mm:ss"}}'
+                               class="form-control"/>
+                    </td>
+                    <td><input disabled type="text" name='outtime'
+                               value='{{((visitor.in_time|date:"dd-MMM-yyyy HH:mm:ss") != (visitor.out_time|date:"dd-MMM-yyyy HH:mm:ss")) ? (visitor.out_time|date:"dd-MMM-yyyy HH:mm:ss") : ""  }}'
+                               class="form-control"/>
+                    </td>
+                    <td style="width: 9%;">
+                        <button style="margin-top: 6%" class='btn btn-success btn-xs glyphicon glyphicon-ok row-remove'
+                                data-toggle="tooltip" title="Check-out"
+                                (click)="outTime(visitor)"></button>
+                        <button style="margin-top: 6%"
+                                class='btn btn-default btn-xs glyphicon glyphicon-pencil row-remove' data-toggle="modal"
+                                title="Update" data-target="#myModalNorm1" (click)="showData(visitor)"></button>
+                        <button style="margin-top: 6%"
+                                class='btn btn-danger btn-xs glyphicon glyphicon-trash row-remove'
+                                name="deleteRow" data-target="#deleteModal" data-keyboard="true"
+                                (click)="showDelete(visitor)" data-toggle="tooltip" title="Delete"></button>
+                    </td>
+                </tr>
+                </tbody>
+                <tfoot>
+                <tr *ngIf="nouser">
+                    <td colspan="6" class="align_center alert alert-info" >No Record Found !!
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <mfBootstrapPaginator [rowsOnPageSet]="[5,10,15]"></mfBootstrapPaginator>
+                    </td>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+    <button tabindex="1" class="logOutbtn" (click)="showlogout()">
+        Logout
+    </button>
+    <button type="button" tabindex="2" class="addbtn" data-toggle="modal" data-target="#myModalNorm" #myModalNorm
+            (keyup.enter)="myModalNorm">Add Visitor
+    </button>
+</div>
+
+<!-- Modal -->
+<div class="auth-main" (keyup.esc)="reset()">
+    <div class="auth-block">
+        <div class="modal fade" id="myModalNorm" tabindex="-1" role="dialog"
+             aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content" style="background-color: lightgrey">
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span aria-hidden="true" (click)="reset()">&times;</span>
+                            <span class="sr-only">Close</span>
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel1">
+                            Add Visitor
+                        </h4>
+                    </div>
+
+                    <!-- Modal Body -->
+                    <div class="modal-body">
+                        <form role="form" [formGroup]="dashForm">
+                            <div class="form-group"
+                                 [ngClass]="{'has-error': (!name.valid && name.touched), 'has-success': (name.valid && name.touched)}"
+                                 required>
+                                <label for="InputName">Name</label>
+                                <input type="text" class="form-control" id="InputName" formControlName="name"
+                                       placeholder="Enter Name" [formControl]="name"/>
+                                <span *ngIf="!name.valid && name.touched"
+                                      class="help-block sub-little-text">Enter valid Email.</span>
+                            </div>
+                            <div class="form-group"
+                                 [ngClass]="{'has-error': (!email.valid && email.touched), 'has-success': (email.valid && email.touched)}"
+                                 required>
+                                <label for="InputEmail">Email address</label>
+                                <div>
+                                    <input type="email" class="form-control" id="InputEmail" formControlName="email"
+                                           placeholder="Enter Email" [formControl]="email"/>
+                                    <span *ngIf=" !email.valid && email.touched "
+                                          class="help-block sub-little-text">Enter valid Email.</span>
+                                </div>
+                            </div>
+                            <div class="form-group"
+                                 [ngClass]="{'has-error': (!number.valid && number.touched), 'has-success': (number.valid && number.touched)}"
+                                 required>
+                                <label for="InputPhone">Phone no</label>
+                                <div>
+                                    <input type="number" minlength="10" maxlength="10" class="form-control"
+                                           id="InputPhone" formControlName="number" placeholder="Enter Phone no"
+                                           [formControl]="number"/>
+                                    <span *ngIf="!number.valid && number.touched "
+                                          class="help-block sub-little-text">Enter valid 10 digit Phone no.</span>
+                                </div>
+                            </div>
+                            <button type="button" [disabled]="!dashForm.valid" id="sumbit"
+                                    (click)="addVisitor($event,name,email,number)" data-dismiss="modal"
+                                    class="btn btn-default">
+                                Submit
+                            </button>
+                            <button type="reset" value="reset" class="btn btn-default" style="margin-left:2%">Reset
+                            </button>
+                        </form>
+                    </div>
+                    <br>
+                    <br>
+
+                    <!-- Modal Footer -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Update Modal -->
+<div class="modal fade" id="myModalNorm1" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="background-color: lightgrey">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <button type="button" class="close"
+                        data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel11">
+                    Update Visitor
+                </h4>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body" style="background-color: lightgrey">
+                <form role="form" style="background-color: lightgrey" [formGroup]="dashForm1">
+                    <div class="form-group">
+                        <input type="hidden" class="form-control"
+                               id="VisitorId" formControlName="visitorid1" [formControl]="visitorid1"/>
+                    </div>
+                    <div class="form-group"
+                         [ngClass]="{'has-error': (!name1.valid && name1.touched), 'has-success': (name1.valid && name1.touched)}"
+                         required>
+                        <label for="InputName">Name</label>
+                        <input type="text" class="form-control"
+                               id="VisitorName" formControlName="name1" placeholder="Enter Email"
+                               [formControl]="name1"/>
+                        <span *ngIf="!name1.valid && name1.touched"
+                              class="help-block sub-little-text">Enter valid Name.</span>
+                    </div>
+                    <div class="form-group"
+                         [ngClass]="{'has-error': (!email1.valid && email1.touched), 'has-success': (email1.valid && email1.touched)}"
+                         required>
+                        <label for="InputEmail">Email address</label>
+                        <div>
+                            <input type="email" class="form-control"
+                                   id="VisitorEmail" formControlName="email1" placeholder="Enter email"
+                                   [formControl]="email1"/>
+                            <span *ngIf="!email1.valid && email1.touched "
+                                  class="help-block sub-little-text">Enter valid Email.</span>
+                        </div>
+                    </div>
+                    <div class="form-group"
+                         [ngClass]="{'has-error': (!number1.valid && number1.touched), 'has-success': (number1.valid && number1.touched)}"
+                         required>
+                        <label for="InputPhone">Phone no</label>
+                        <div>
+                            <input type="tel" class="form-control" minlength="10" maxlength="10"
+                                   pattern="[1-9]{1}[0-9]{9}"
+                                   id="VisitorPhone" formControlName="number1" placeholder="password"
+                                   [formControl]="number1"/>
+                            <span *ngIf="!number1.valid && number1.touched "
+                                  class="help-block sub-little-text">Enter valid 10 digit Phone no.</span>
+                        </div>
+                    </div>
+                    <button [disabled]="!dashForm1.valid" type="button" id="sumbit1" (click)="show()"
+                            data-dismiss="modal"
+                            class="btn btn-default">Submit
+                    </button>
+                </form>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="modal-footer">
+                <br>
+                <br>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal confirmation-->
+<div class="modal fade alert-modal in" [ngStyle]="{'display' : visibleSubmit ? 'block' : 'none'}"
+     data-toggle="tableModal" id="submitModal" (keyup.esc)="reset()" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-sm" data-dismiss="modal" tabindex="-1" (keyup.esc)="hide()"
+         style="margin-top: 12% ; background-color: grey">
+        <div class="modal-content">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>
+                        Update Confirmation ?
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>
+                        <p>
+                            "Visitor will be updated. Do you want to continue?"
+                        </p>
+                        <button type="submit" class="btn btn-lg green-bg"
+                                (click)="saveVisitor(dashForm1.value);hide()">Yes
+                        </button>
+                        <button type="submit" class="btn btn-lg green-bg" (click)="hide()" data-dismiss="modal">No
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal delete confirmation-->
+<div class="modal fade alert-modal in" style="margin-top: 10%" [ngStyle]="{'display' : visible ? 'block' : 'none'}"
+     data-toggle="tableModal"
+     id="deleteModal" tabindex="-1" role="dialog" data-dismiss="modal" (keyup.esc)="hideDelete()"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>
+                        Delete Confirmation ?
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>
+                        <p>
+                            "Visitor will be deleted. Do you want to continue?"
+                        </p>
+                        <button type="submit" class="btn btn-lg green-bg" (click)="delVisitor();hideDelete();">Yes</button>
+                        <button type="submit" class="btn btn-lg green-bg" (click)="hideDelete()" data-dismiss="modal">
+                            No
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade alert-modal in" [ngStyle]="{'display' : visiblelogout ? 'block' : 'none'}"
+
+     data-toggle="tableModal" (keyup.esc)="reset()" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-sm" data-dismiss="modal" tabindex="-1" (keyup.esc)="hidelogOut()"
+         style="margin-top: 12% ; background-color: grey">
+        <div class="modal-content">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>
+                        Logout Confirmation ?
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>
+                        <p>
+                            "You will be logged out. Do you want to continue?"
+                        </p>
+                        <button type="submit" class="btn btn-lg green-bg" (click)="logOut();hidelogOut()">Yes
+                        </button>
+                        <button type="submit" class="btn btn-lg green-bg" (click)="hidelogOut()" data-dismiss="modal">
+                            No
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+

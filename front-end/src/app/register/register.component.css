@@ -1,0 +1,113 @@
+#dashtoast {
+    visibility: hidden;
+    min-width: 250px;
+    margin-left: -125px;
+    background-color: red;
+    color: white;
+    text-align: center;
+    border-radius: 2px;
+    padding: 16px;
+    position: fixed;
+    z-index: 1;
+    left: 50%;
+    bottom: 30px;
+}
+
+.header_style {
+    width: 70%;
+    margin: 0 auto;
+    background-color: lightgrey;
+    margin-top: 5%;
+}
+
+.main_block {
+    margin-left: 10%;
+    padding: 5%;
+}
+
+.dash_btn {
+    padding: auto;
+    margin: auto;
+    margin-bottom: 4%;
+}
+
+.myclass {
+    visibility: hidden;
+}
+
+.title_div {
+    margin-left: 20%;
+}
+
+input.ng-valid {
+    border-left: 5px solid green;
+}
+
+.login_btn {
+    background-color: green;
+    margin-left: 15%;
+    color: white;
+}
+
+.submit_btn {
+    background-color: red;
+    color: whitesmoke;
+}
+
+input.ng-invalid {
+    border-left: 5px solid red;
+}
+
+#formDiv {
+    text-align: center;
+}
+
+#dashtoast.show {
+    visibility: visible; /* Show the snackbar */
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+@-webkit-keyframes fadein {
+    from {
+        bottom: 0;
+        opacity: 0;
+    }
+    to {
+        bottom: 30px;
+        opacity: 1;
+    }
+}
+
+@keyframes fadein {
+    from {
+        bottom: 0;
+        opacity: 0;
+    }
+    to {
+        bottom: 30px;
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes fadeout {
+    from {
+        bottom: 30px;
+        opacity: 1;
+    }
+    to {
+        bottom: 0;
+        opacity: 0;
+    }
+}
+
+@keyframes fadeout {
+    from {
+        bottom: 30px;
+        opacity: 1;
+    }
+    to {
+        bottom: 0;
+        opacity: 0;
+    }
+}
